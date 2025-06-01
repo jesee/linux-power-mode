@@ -8,20 +8,20 @@
 
 ## 安装步骤
 
-1. 将 `power-mode-set` 文件复制到 `/usr/local/bin` 目录：
+1. 将 `powermodeset` 文件复制到 `/usr/local/bin` 目录：
    ```bash
-   sudo cp power-mode-set /usr/local/bin/
+   sudo cp powermodeset /usr/local/bin/
    ```
 
 2. 赋予可执行权限：
    ```bash
-   sudo chmod +x /usr/local/bin/power-mode-set
+   sudo chmod +x /usr/local/bin/powermodeset
    ```
 
 ## 命令行使用
 - 通过终端直接运行：
   ```bash
-  power-mode-set
+  powermodeset
   ```
 - 或通过创建的菜单项图形化操作
 
@@ -38,7 +38,7 @@
    [Desktop Entry]
    Name=电源模式
    Comment=切换电源性能模式
-   Exec=xfce4-terminal --title="电源模式切换" --hold -e "/usr/local/bin/power-mode-set"
+   Exec=xfce4-terminal --title="电源模式切换" --hold -e "/usr/local/bin/powermodeset"
    Icon=preferences-system-power
    Terminal=false
    Type=Application
