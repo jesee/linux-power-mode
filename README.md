@@ -80,7 +80,7 @@ sudo chmod +x /usr/local/bin/auto-power-mode
    ```
    watch -n 1 "cat /proc/cpuinfo | grep MHz"
    ```
-   或
+   或 使用专门工具实时查看cpu信息
    ```
    sudo apt install -y s-tui
    s-tui
