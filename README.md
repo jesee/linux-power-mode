@@ -62,12 +62,13 @@
    👉 请输入要切换的电源模式序号（或 q 退出）：
    ```
 ## 自动切换电源模式
-1. 复制auto-power-mode到/usr/local/bin/auto-power-mode
-2. 加可执行权限
+1. 可以实现使用电池的时候自动切换到节能模式，插入电源自动切换到平衡模式
+2. 复制auto-power-mode到/usr/local/bin/auto-power-mode
+3. 加可执行权限
 ```
 sudo chmod +x /usr/local/bin/auto-power-mode
 ```
-3. 在启动项中添加auto-power-mode脚本
+4. 在启动项中添加auto-power-mode脚本
 
 ## 观察是否有效
 1. 你可以用以下命令查看当前 CPU scaling governor 和频率限制：
