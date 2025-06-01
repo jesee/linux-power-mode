@@ -68,3 +68,19 @@
 sudo chmod +x /usr/local/bin/auto-power-mode
 ```
 3. 在启动项中添加auto-power-mode脚本
+
+## 观察是否有效
+1. 你可以用以下命令查看当前 CPU scaling governor 和频率限制：
+   ```
+   cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+   cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq
+   ```
+2. 建议你用这个命令观察 CPU 实时频率变化：
+   ```
+   watch -n 1 "cat /proc/cpuinfo | grep MHz"
+   ```
+   或
+   ```
+   sudo apt install -y s-tui
+   s-tui
+   ```
