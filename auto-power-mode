@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# 状态缓存变量
+LAST_STATE=""
+
+# 自动检测 AC 电源路径
+AC_ONLINE_FILE=""
+for device in /sys/class/power_supply/*; do
+    if [[ -f "$device/type" ]] && grep -q "Mains" "$device/type"; then
+        AC_ONLINE_FILE="$device/online"
+        break
+    fi
+done
+
+if [[ ! -f "$AC_ONLINE_FILE" ]]; then
+    notify-send "⚠️ 电源检测失败" "未找到 AC 电源设备"
+    exit 1
+fi
+
+while true; do
+    CURRENT_STATE=$(cat "$AC_ONLINE_FILE")
+
+    if [[ "$CURRENT_STATE" != "$LAST_STATE" ]]; then
+        if [[ "$CURRENT_STATE" -eq 1 ]]; then
+            powerprofilesctl set balanced
+            notify-send "⚡ 电源已接入" "已切换为平衡模式（balanced）"
+        else
+            powerprofilesctl set power-saver
+            notify-send "🔋 使用电池供电" "已切换为省电模式（power-saver）"
+        fi
+        LAST_STATE="$CURRENT_STATE"
+    fi
+
+    sleep 5
+done
+

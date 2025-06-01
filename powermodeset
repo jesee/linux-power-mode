@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# 模式中文描述映射
+declare -A descriptions=(
+    ["performance"]="高性能模式：优先性能，适合高负载任务"
+    ["balanced"]="平衡模式：性能与能耗之间取得平衡"
+    ["power-saver"]="省电模式：优先节能，适合电池续航"
+)
+
+# 获取当前模式
+current_mode=$(powerprofilesctl get 2>/dev/null)
+if [[ -z "$current_mode" ]]; then
+    echo "❌ 无法获取当前电源模式，请检查 powerprofilesctl 是否正常工作。"
+    exit 1
+fi
+
+echo "🔋 当前电源模式："
+echo "    ➤ $current_mode"
+echo
+
+echo "📋 支持的电源模式："
+
+# 提取仅模式名称（冒号前的内容）
+mapfile -t lines < <(powerprofilesctl list | grep -E '^\s*(\*?)\s*[a-z\-]+:' | sed 's/^[* ]*//;s/://')
+
+modes=()
+for i in "${!lines[@]}"; do
+    mode="${lines[$i]}"
+    modes+=("$mode")
+    mark=""
+    [[ "$mode" == "$current_mode" ]] && mark="(当前)"
+    desc="${descriptions[$mode]:-（无中文描述）}"
+    printf "  [%d] %s %s\n" "$i" "$mode" "$mark"
+    printf "       └─ 描述：%s\n" "$desc"
+done
+
+echo
+read -p "👉 请输入要切换的电源模式序号（或 q 退出）： " choice
+
+# 退出逻辑
+if [[ "$choice" == "q" || "$choice" == "Q" ]]; then
+    echo "👋 已退出。"
+    exit 0
+fi
+
+# 校验输入合法性
+if ! [[ "$choice" =~ ^[0-9]+$ ]] || (( choice < 0 || choice >= ${#modes[@]} )); then
+    echo "❌ 输入无效，请输入有效序号。"
+    exit 1
+fi
+
+# 切换电源模式
+selected="${modes[$choice]}"
+echo "🔁 正在切换到：$selected..."
+if powerprofilesctl set "$selected"; then
+    echo "✅ 切换成功，现在的电源模式是：$selected"
+else
+    echo "❌ 切换失败，请确认系统是否支持该模式。"
+fi
+
