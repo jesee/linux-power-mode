@@ -61,3 +61,10 @@
    
    👉 请输入要切换的电源模式序号（或 q 退出）：
    ```
+## 自动切换电源模式
+1. 复制auto-power-mode到/usr/local/bin/auto-power-mode
+2. 加可执行权限
+```
+sudo chmod +x /usr/local/bin/auto-power-mode
+```
+3. 在启动项中添加auto-power-mode脚本
